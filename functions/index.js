@@ -41,13 +41,6 @@ exports.index = functions.https.onRequest((req, res) => {
     if (err) {
       console.log(err)
     }
-    var img = Buffer.from(url, 'base64');
-
-    res.writeHead(200, {
-      'Content-Type': 'image/png',
-      'Content-Length': img.length
-    });
-    res.end(img);
-    // res.status(200).render('index', { poolQRCode: url })
+    res.status(200) //.render('index', { poolQRCode: url })
   })
 })
