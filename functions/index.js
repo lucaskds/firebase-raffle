@@ -85,11 +85,22 @@ exports.addParticipant = functions.https.onRequest((req, res) => {
  })
  
 
-exports.index = functions.https.onRequest((req, res) => {
-  QRCode.toDataURL('I am a pony!', (err, url) => {
+exports.newParticipant = functions.https.onRequest((req, res) => {
+  res.send(`<html><head><title>${req.query.pool}</title></head><body>A form here</body></html>`)
+  res.status(200)
+})
+
+exports.generateQrCode = functions.https.onRequest((req, res) => {
+  const firebaseConfig = JSON.parse(process.env.FIREBASE_CONFIG)
+  const baseURL = `https://us-central1-${firebaseConfig.projectId}.cloudfunctions.net/newParticipant?pool=`
+  const poolUrl = baseURL + req.query.pool.toLowerCase().trim().replace(/ +/g, '-')
+  QRCode.toDataURL(poolUrl, (err, url) => {
     if (err) {
       console.log(err)
+      res.status(500)
     }
-    res.status(200) //.render('index', { poolQRCode: url })
+    const htmlToRender = `<html><head></head><body><img src="${url}"></body></html>`
+    res.send(htmlToRender)
+    res.status(200)
   })
 })
