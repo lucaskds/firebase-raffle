@@ -78,12 +78,11 @@ exports.addParticipant = functions.https.onRequest((req, res) => {
     res.status(200).json(snapshot.val())
    }, (error) => {
     res.status(error.code).json({
-     message: `Something went wrong. ${error.message}`
+      message: `Something went wrong. ${error.message}`
     })
    })
   })
- })
- 
+})
 
 exports.newParticipant = functions.https.onRequest((req, res) => {
   res.send(`<html><head><title>${req.query.pool}</title></head><body>A form here</body></html>`)
@@ -103,4 +102,9 @@ exports.generateQrCode = functions.https.onRequest((req, res) => {
     res.send(htmlToRender)
     res.status(200)
   })
+})
+
+exports.index = functions.https.onRequest((req, res) => {
+  res.send("Welcome to The Raffle!")
+  res.status(200)
 })
